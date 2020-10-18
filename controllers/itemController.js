@@ -7,15 +7,15 @@ const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display item detail
-exports.detail = function (req, res){
+exports.detail = function (req, res) {
     async.parallel({
-        item: function(callback) {
+        item: function (callback) {
             Item.findById(req.params.id)
-              .exec(callback)
+                .exec(callback)
         }
-    }, function(err, results) {
+    }, function (err, results) {
         if (err) { return next(err); }
-        if (results.item==null) {
+        if (results.item == null) {
             var err = new Error('Item not found');
             err.status = 404;
             return next(err);
@@ -34,7 +34,7 @@ exports.item_create_get = function (req, res, next) {
         if (err) { return next(err); }
         res.render('create_form', { title: 'Create Item', categories: results.categories });
     });
-  };
+};
 
 // Handle Item create on POST.
 exports.item_create_post = [
@@ -76,20 +76,20 @@ exports.item_create_post = [
             });
         }
     }
-  ];
+];
 
 // Display item delete form on GET.
 exports.item_delete_get = function (req, res) {
     async.parallel({
         item: function (callback) {
             Item.findById(req.params.id).exec(callback)
-        }        
+        }
     }, function (err, results) {
         if (err) { return next(err); }
         if (results.item === null) { // No results.
             res.redirect('/');
         }
-        res.render('item_delete', { title: 'Delete Item', item: results.item});
+        res.render('item_delete', { title: 'Delete Item', item: results.item });
     });
 };
 
